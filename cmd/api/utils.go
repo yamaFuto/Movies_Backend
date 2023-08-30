@@ -43,9 +43,10 @@ func (app *application) readJSON(w http.ResponseWriter, r *http.Request, data in
 	r.Body = http.MaxBytesReader(w, r.Body, int64(maxBytes))
 
 	//r.Bodyをdecodeするmethodを生成
+	//unmarshalと違ってerrorなどをカスタマイズできる、またioのFileを引数にとることができる
 	dec := json.NewDecoder(r.Body)
 
-	//いれるdataの構造と違うkeyを持っている場合にはerrorを返す
+	//いれるdataの構造と違うkeyを持っている場合にはerrorを返すようになるようにする
 	dec.DisallowUnknownFields()
 
 	err := dec.Decode(data)
@@ -53,7 +54,7 @@ func (app *application) readJSON(w http.ResponseWriter, r *http.Request, data in
 		return err
 	}
 
-	//requestがjsonをつたつ以上持っていた場合なerrorを返す
+	//requestがjsonを2つ以上持っていた場合なerrorを返す
 	err = dec.Decode(&struct{}{})
 	//jsonが一つの時はio.EOFと同じerrorをDecode()が吐く
 	if err != io.EOF {
