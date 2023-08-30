@@ -43,7 +43,10 @@ func (app *application) readJSON(w http.ResponseWriter, r *http.Request, data in
 	r.Body = http.MaxBytesReader(w, r.Body, int64(maxBytes))
 
 	//r.Bodyをdecodeするmethodを生成
+	//Decoderにio.Readerを渡してDecodeする方法は、
+	//Decodeはストリームから次のjsonを取り出して処理するため、jsonが複数個含まれているファイルも処理できる
 	//unmarshalと違ってerrorなどをカスタマイズできる、またioのFileを引数にとることができる
+	//Unmarshalに渡すバイト列はひとつのjsonとして正しい形式である必要がある(jsonは一つだけ)
 	dec := json.NewDecoder(r.Body)
 
 	//いれるdataの構造と違うkeyを持っている場合にはerrorを返すようになるようにする
