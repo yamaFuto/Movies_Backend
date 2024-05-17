@@ -32,4 +32,3 @@ func (app *application) authRequired(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
-

@@ -75,7 +75,7 @@ func New(movies []*models.Movie) *Graph {
 					Type: graphql.String,
 				},
 			},
-			Resolve: func (params graphql.ResolveParams) (interface{}, error) {
+			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				var theList []*models.Movie
 				search, ok := params.Args["titleContains"].(string)
 				if ok {
